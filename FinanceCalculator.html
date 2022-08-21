@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance</title>
+
+    <style>
+        .wrapperDiv {
+            border: solid 1px grey;
+            border-radius: 8px;
+            background: #283826d4;
+            color: #ffffff;
+            width: 306px;
+            height: 355px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* margin: auto;  To center a div*/
+        }
+
+        .avgDiv {
+            width: 218px;
+            height: 52px;
+            background: #223c2c;
+            color: #ffffff;
+            border: solid #ffffff 3px;
+            /* background: #e0fdeb;
+            color: #1f0214; */
+            font-size: 18px;
+            box-shadow: 3px 3px 4px #000000;
+            border-radius: 3px;
+            padding: 6px;
+        }
+
+        .inpWrapDiv {
+            margin-bottom: 10px;
+            border: solid #c4c4c4 3px;
+            border-radius: 4px;
+            padding: 6px;
+            box-shadow: 3px 3px 4px 0px #000000;
+            width: 215px;
+        }
+
+        input::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            display: none;
+        }
+
+        input {
+            width: 67px;
+            height: 29px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .inputRow {
+            display: inline-block;
+
+        }
+
+        .inputLabel {
+            width: 135px;
+        }
+
+        .avgRate {
+            background: #03fff769;
+            font-size: 23px;
+            border-radius: 5px;
+        }
+
+        .amountReq {
+            background: #00ff8d63;
+            font-size: 23px;
+            border-radius: 5px;
+        }
+
+        .inputForm {
+            margin: auto;
+            right: 33px;
+        }
+
+        /* @media screen and (max-width : 780px) and (min-width : 500px){
+            .wrapperDiv {
+                left: 19%;
+                top: 11px;
+                height: 332px;
+            }
+        }
+        @media screen and (max-width : 499px){
+            .wrapperDiv {
+                left: calc(100vw - 480px);
+                top: 11px;
+                height: 332px;
+            }
+        } */
+    </style>
+</head>
+
+<body style="background: #14f06921;">
+    <div class="mainDiv">
+        <diV class="wrapperDiv">
+            <ul>
+                <div class="avgDiv">
+                    <label> Average Rate :</label>
+                    <label class="avgRate " id="avgRate"></label>
+                    <br />
+                    <label>Amount Req &nbsp;:</label>
+                    <label class="amountReq" id="amountReq"></label>
+                </div>
+            </ul>
+            <ul class="inputForm">
+                <div class="inpWrapDiv">
+                    <div class="inputRow inputLabel"><label>Current Share Price</label></div>:
+                    <div class="inputRow">
+                        <input id="currentRate" type="number">
+                    </div>
+                </div>
+                <div class="inpWrapDiv">
+                    <div class="inputRow inputLabel"><label>Current Quantity</label></div>:
+                    <div class="inputRow">
+                        <input id="currentQuant" type="number">
+                    </div>
+                </div>
+                <div class="inpWrapDiv">
+                    <div class="inputRow inputLabel"><label>New Share Price</label></div>:
+                    <div class="inputRow">
+                        <input id="newRate" type="number">
+                    </div>
+                </div>
+                <div class="inpWrapDiv">
+                    <div class="inputRow inputLabel"><label>New Quantity</label></div>:
+                    <div class="inputRow">
+                        <input id="newQuant" type="number">
+                    </div>
+                </div>
+            </ul>
+        </diV>
+    </div>
+</body>
+
+<script>
+
+
+    document.querySelectorAll('.inputForm').forEach(element => {
+
+        element.addEventListener("keyup", () => {
+
+            let currentRate = document.getElementById('currentRate').value;
+            let currentQuant = document.getElementById('currentQuant').value;
+            let newRate = document.getElementById('newRate').value;
+            let newQuant = document.getElementById('newQuant').value;
+
+            let result = avgRateCalc(parseFloat(currentRate), parseInt(currentQuant), parseFloat(newRate), parseInt(newQuant));
+
+            document.getElementById('avgRate').textContent = result.avgRate;
+            document.getElementById('amountReq').textContent = result.amountReq;
+        });
+    });
+    const avgRateCalc = (currentRate, currentQuant, newRate, newQuant) => {
+
+        let result = {};
+        if (!(isNaN(newRate) || isNaN(newQuant))) {
+
+            let amountReq = newRate * newQuant;
+            result.amountReq = amountReq.toFixed(2);
+        }
+        if (!(isNaN(currentRate) || isNaN(currentQuant) || isNaN(newRate) || isNaN(newQuant))) {
+
+            let avgRate = (currentRate * currentQuant + newRate * newQuant) / (currentQuant + newQuant);
+            result.avgRate = avgRate.toFixed(2);
+        }
+        return result;
+    }
+</script>
+
+</html>
