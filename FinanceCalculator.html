@@ -121,8 +121,12 @@
                     <label>Bought Amount :</label>
                     <label class="labelResult" id="boughtAmt"></label>
                     <br />
+
                     <label>Total Amount :</label>
                     <label class="labelResult" id="totalAmt"></label>
+                    <br />
+                    <label>% Change :</label>
+                    <label class="labelResult" id="percentChng"></label>
                 </div>
             </ul>
             <ul class="inputForm">
@@ -160,9 +164,6 @@
 
 <script>
 
-
-
-
     const avgRateCalc = (currentRate, currentQuant, newRate, newQuant) => {
 
         let result = {};
@@ -176,6 +177,16 @@
             let amountReq = newRate * newQuant;
             result.amountReq = Math.ceil(amountReq);
         }
+        if (!(isNaN(currentRate) || isNaN(newRate))) {
+
+            let percentChng = ((newRate - currentRate) / currentRate) * 100;
+            if (percentChng < 0)
+                document.getElementById('percentChng').style.background = '#b70404';
+            else
+                document.getElementById('percentChng').style.background = '#0a6838';
+
+            result.percentChng = percentChng.toFixed(2);
+        }
         if (!(isNaN(currentRate) || isNaN(currentQuant) || isNaN(newRate) || isNaN(newQuant))) {
 
             let avgRate = (currentRate * currentQuant + newRate * newQuant) / (currentQuant + newQuant);
@@ -188,10 +199,8 @@
 
     const clearInputs = () => {
 
-        document.getElementById('currentRate').value = "";
-        document.getElementById('currentQuant').value = "";
-        document.getElementById('newRate').value = "";
-        document.getElementById('newQuant').value = "";
+        document.querySelectorAll('input').forEach(element => { element.value = '' });
+        document.querySelectorAll('.labelResult').forEach(element => { element.innerText = '' });
     };
 
     document.querySelectorAll('.inputForm').forEach(element => {
@@ -209,10 +218,9 @@
             document.getElementById('amountReq').textContent = result.amountReq;
             document.getElementById('totalAmt').textContent = result.totalAmt;
             document.getElementById('boughtAmt').textContent = result.boughtAmt;
+            document.getElementById('percentChng').textContent = result.percentChng;
         });
     });
-
-
 </script>
 
 </html>
