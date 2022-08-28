@@ -121,11 +121,10 @@
                     <label>Bought Amount :</label>
                     <label class="labelResult" id="boughtAmt"></label>
                     <br />
-
                     <label>Total Amount :</label>
                     <label class="labelResult" id="totalAmt"></label>
                     <br />
-                    <label>% Change :</label>
+                    <label>Change Percent :</label>
                     <label class="labelResult" id="percentChng"></label>
                 </div>
             </ul>
@@ -185,7 +184,7 @@
             else
                 document.getElementById('percentChng').style.background = '#0a6838';
 
-            result.percentChng = percentChng.toFixed(2);
+            result.percentChng = percentChng.toFixed(2) + '%';
         }
         if (!(isNaN(currentRate) || isNaN(currentQuant) || isNaN(newRate) || isNaN(newQuant))) {
 
@@ -221,6 +220,93 @@
             document.getElementById('percentChng').textContent = result.percentChng;
         });
     });
+
+
+    const sleep = () => {
+        return new Promise(resolve => setTimeout(resolve, 10));
+    }
+    const colors = {
+        incDecColor: 'green', red: 225, green: 0, blue: 0
+    }
+    const changeBG = () => {
+
+        if (colors.green == 0 && colors.red == 225 && colors.blue == 0) {
+            colors.incDecColor = 'green';
+            incDec('inc', colors);
+        }
+        else if (colors.green == 225 && colors.red == 225 && colors.blue == 0) {
+            colors.incDecColor = 'red';
+            incDec('dec', colors);
+        }
+        else if (colors.green == 225 && colors.red == 0 && colors.blue == 0) {
+            colors.incDecColor = 'blue';
+            incDec('inc', colors);
+        }
+        else if (colors.green == 225 && colors.blue == 225 && colors.red == 0) {
+            colors.incDecColor = 'green';
+            incDec('dec', colors);
+        }
+        else if (colors.green == 0 && colors.blue == 225 && colors.red == 0) {
+            colors.incDecColor = 'red';
+            incDec('inc', colors);
+        }
+        else if (colors.green == 0 && colors.red == 225 && colors.blue == 225) {
+            colors.incDecColor = 'blue';
+            incDec('dec', colors);
+        }
+    };
+
+    async function incDec(type, colors) {
+
+        let inc = 0, dec = 225;
+        switch (type) {
+
+            case 'inc':
+                while (inc < 226) {
+
+                    switch (colors.incDecColor) {
+                        case 'green':
+                            colors.green = inc;
+                            break;
+                        case 'red':
+                            colors.red = inc;
+                            break;
+                        case 'blue':
+                            colors.blue = inc;
+                            break;
+                    }
+                    document.getElementsByTagName('body')[0].style.background = `rgb(${colors.red},${colors.green},${colors.blue})`;
+                    await sleep();
+                    if (inc == 225)
+                        changeBG()
+                    inc++;
+                }
+                break;
+            case 'dec':
+                while (dec >= 0) {
+
+                    switch (colors.incDecColor) {
+                        case 'green':
+                            colors.green = dec;
+                            break;
+                        case 'red':
+                            colors.red = dec;
+                            break;
+                        case 'blue':
+                            colors.blue = dec;
+                            break;
+                    }
+                    document.getElementsByTagName('body')[0].style.background = `rgb(${colors.red},${colors.green},${colors.blue})`;
+                    await sleep();
+                    if (dec == 0)
+                        changeBG()
+                    dec--;
+
+                }
+                break;
+        }
+    }
+    changeBG();
 </script>
 
 </html>
